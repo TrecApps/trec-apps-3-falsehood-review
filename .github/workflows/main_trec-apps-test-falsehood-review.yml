@@ -30,7 +30,8 @@ jobs:
         run : |
           mkdir -p ~/.gradle/
           echo "GRADLE_USER_HOME=${HOME}/.gradle" >> $GITHUB_ENV
-          echo "${GRADLE_UN}\n" >> ~/.gradle/gradle.properties  
+          echo "${GRADLE_UN}\n" >> ~/.gradle/gradle.properties
+          cat ~/.gradle/gradle.properties
           echo "${GRADLE_PW}\n" >> ~/.gradle/gradle.properties 
           echo "${GRADLE_URL}" >> ~/.gradle/gradle.properties         
 
