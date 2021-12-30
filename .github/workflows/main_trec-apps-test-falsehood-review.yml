@@ -30,7 +30,9 @@ jobs:
         run : |
           mkdir -p ~/.gradle/
           echo "GRADLE_USER_HOME=${HOME}/.gradle" >> $GITHUB_ENV
-          echo "${GRADLE_UN} \n ${GRADLE_PW} \n ${GRADLE_URL}" > ~/.gradle/gradle.properties          
+          echo "${GRADLE_UN}\n" >> ~/.gradle/gradle.properties  
+          echo "${GRADLE_URL}\n" >> ~/.gradle/gradle.properties 
+          echo "${GRADLE_PW}" >> ~/.gradle/gradle.properties         
 
       - name: Build with Gradle
         run: gradle build
