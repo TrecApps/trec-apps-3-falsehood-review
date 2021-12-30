@@ -23,17 +23,12 @@ jobs:
       
       - name: Set Up Gradle Properties
         env:
-          GRADLE_UN: ${{secrets.AZUREREPOUSERNAME}}
-          GRADLE_PW: ${{secrets.AZUREREPOPASSWORD}}
-          GRADLE_URL: ${{secrets.AZUREREPOURL}}
+          GRADLE_PROPS: ${{secrets.GRADLE_PROPS}}
         shell: bash
         run : |
           mkdir -p ~/.gradle/
           echo "GRADLE_USER_HOME=${HOME}/.gradle" >> $GITHUB_ENV
-          echo "${GRADLE_UN}\n" >> ~/.gradle/gradle.properties
-          cat ~/.gradle/gradle.properties
-          echo "${GRADLE_PW}\n" >> ~/.gradle/gradle.properties 
-          echo "${GRADLE_URL}" >> ~/.gradle/gradle.properties         
+          echo "${GRADLE_PROPS}" > ~/.gradle/gradle.properties      
 
       - name: Build with Gradle
         run: gradle build
