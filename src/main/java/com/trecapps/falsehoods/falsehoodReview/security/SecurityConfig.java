@@ -1,17 +1,25 @@
 package com.trecapps.falsehoods.falsehoodReview.security;
 
 import com.azure.spring.aad.webapp.AADOAuth2UserService;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.trecapps.base.FalsehoodModel.repos.FalsehoodUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.stereotype.Component;
 
 @EnableWebSecurity
-@Component
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    AADOAuth2UserService getAadoAuth2UserService(AADAuthenticationProperties aadAuthProps)
+    {
+        return new AADOAuth2UserService(aadAuthProps);
+    }
 
     @Autowired
     AADOAuth2UserService aadoAuth2UserService;
