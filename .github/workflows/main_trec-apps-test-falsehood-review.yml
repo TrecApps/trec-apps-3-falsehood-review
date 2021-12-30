@@ -20,6 +20,20 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11'
+      
+      - name: Set Up Gradle Properties
+        env:
+          GRADLE_UN: ${{secrets.AZUREREPOUSERNAME}}
+          GRADLE_PW: ${{secrets.AZUREREPOPASSWORD}}
+          GRADLE_URL: ${{secrets.AZUREREPOURL}}
+        shell: bash
+        run : |
+          mkdir -p ~/.gradle/
+          echo "GRADLE_USER_HOME=${HOME}/.gradle" >> $GITHUB_ENV
+          echo "${GRADLE_UN}\n" > ~/.gradle/gradle.properties
+          echo "${GRADLE_PW}\n" > ~/.gradle/gradle.properties
+          echo "${GRADLE_URL}\n" > ~/.gradle/gradle.properties
+          
 
       - name: Build with Gradle
         run: gradle build
