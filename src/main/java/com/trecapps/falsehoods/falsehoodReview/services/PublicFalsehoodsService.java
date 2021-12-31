@@ -1,5 +1,7 @@
 package com.trecapps.falsehoods.falsehoodReview.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.trecapps.base.FalsehoodModel.models.FalsehoodRecords;
 import com.trecapps.base.FalsehoodModel.models.FalsehoodUser;
 import com.trecapps.base.FalsehoodModel.models.PublicFalsehood;
 import com.trecapps.base.FalsehoodModel.models.PublicFalsehoodRecords;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,7 +32,7 @@ public class PublicFalsehoodsService {
 
     public String addVerdict(BigInteger id, String approve, String comment)
     {
-        if(!cRepos.existsById(id) || !repo.existsById(id))
+        if( !repo.existsById(id))
             return "404: Falsehood does not exist!";
 
         // Make Sure Request hasn't been rejected or approved
@@ -45,16 +48,21 @@ public class PublicFalsehoodsService {
 
         Record record = new Record("Verdict", approve, new Date(Calendar.getInstance().getTime().getTime()), 0l, comment);
 
-        Optional<PublicFalsehoodRecords> oRecords = cRepos.findById(id);
-        if(oRecords.isEmpty())
-            return "500: Failed to detect Absence of Specific Falsehood!";
-
-        PublicFalsehoodRecords records = oRecords.get();
-        records.getRecords().add(record);
-        cRepos.save(records);
+        List<Record> records;
+        try {
+            records = cRepos.retrieveRecords(id);
+            records.add(record);
+            PublicFalsehoodRecords fRecords = new PublicFalsehoodRecords();
+            fRecords.setFalsehoodId(id);
+            fRecords.setRecords(records);
+            cRepos.save(fRecords);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "500: Detected poorly formatted data for Falsehood Entry " + id;
+        }
 
         int appCount = 0, safeRej = 0, penRej = 0;
-        for(Record r: records.getRecords())
+        for(Record r: records)
         {
             if("Verdict".equals(r.getRecordType()))
             {
