@@ -8,18 +8,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
-@Component
-public class StorageClient {
+//@Component
+public class ReviewStorageClient {
 
     //Logger
     WebClient client;
 
-    public StorageClient()
+    public ReviewStorageClient()
     {
         client = WebClient.builder().build();
     }
 
-    @Value("${storage.url}")
+    //@Value("${storage.url}")
     String baseStorageUrl;
 
     Mono<String> getFalsehoodContents(String id)
