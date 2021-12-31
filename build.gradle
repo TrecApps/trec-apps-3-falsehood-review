@@ -26,7 +26,7 @@ repositories {
 dependencies {
     // Trec-Apps Model Dependencies
     implementation 'com.trecapps.base:InfoResource:+'
-    implementation 'com.trecapps.base:FalsehoodModel:0.0.9'
+    implementation 'com.trecapps.base:FalsehoodModel:+'
 
     // Spring Boot features
     implementation 'org.springframework.boot:spring-boot-starter-web:+'
