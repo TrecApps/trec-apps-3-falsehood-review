@@ -25,11 +25,10 @@ repositories {
 
 dependencies {
     // Trec-Apps Model Dependencies
-    implementation 'com.trecapps.base:InfoResource:+'
-    implementation 'com.trecapps.base:FalsehoodModel:+'
+    implementation 'com.trecapps.base:InfoResource:0.1.0'
+    implementation 'com.trecapps.base:FalsehoodModel:0.1.6'
 
     // Spring Boot features
-    implementation 'org.springframework.boot:spring-boot-starter-web:+'
     implementation 'org.springframework.boot:spring-boot-starter-webflux:+'
     implementation 'org.springframework.boot:spring-boot-starter-actuator:+'
 
