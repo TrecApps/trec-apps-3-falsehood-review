@@ -2,7 +2,7 @@ package com.trecapps.falsehoods.falsehoodReview.security;
 
 import com.azure.spring.aad.webapp.AADOAuth2UserService;
 import com.trecapps.base.FalsehoodModel.models.FalsehoodUser;
-import com.trecapps.base.FalsehoodModel.repos.FalsehoodUserRepo;
+import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
