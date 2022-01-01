@@ -2,7 +2,13 @@ package com.trecapps.falsehoods.falsehoodReview.config;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -12,73 +18,47 @@ import reactor.core.publisher.Mono;
 public class StorageClient {
 
     //Logger
-    WebClient client;
+    RestTemplate client;
     
     public StorageClient()
     {
-        client = WebClient.builder().build();
+        client = new RestTemplate();
     }
 
     @Value("${storage.url}")
     String baseStorageUrl;
 
-    public Mono<String> getContents(String id, String app)
+    public ResponseEntity<String> getContents(String id, String app)
     {
-        return client.get().uri(baseStorageUrl + "/download")
-                .header("FileId", id)
-                .header("App", app)
-                .exchangeToMono((ClientResponse resp) ->{
-                    if(resp.statusCode().isError())
-                    {
-                        // To-Do: Log Error
-
-                        throw new WebClientResponseException(resp.rawStatusCode(),
-                                resp.statusCode().getReasonPhrase(), resp.headers().asHttpHeaders(), null, null);
-                    }
-                    return resp.bodyToMono(String.class);
-                });
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("FileId", id);
+        headers.add("App", app);
+        return client.exchange(baseStorageUrl + "/download", HttpMethod.GET,new HttpEntity(headers),String.class);
     }
 
-    public Mono<String> SubmitDocument(String name, String contents, String account)
+    public ResponseEntity<String> SubmitDocument(String name, String contents, String account)
     {
-        return client.post().uri(baseStorageUrl + "/upload")
-                .header("FileName", name)
-                .header("App", "Falsehoods")
-                .header("Content-type", "document")
-                .header("Extension", "md")
-                .header("Account", account)
-                .body(contents, String.class)
-                .exchangeToMono((ClientResponse resp) ->{
-                    if(resp.statusCode().isError())
-                    {
-                        // To-Do: Log Error
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("App", "Falsehoods");
+        headers.add("FileName", name);
+        headers.add("App", "Falsehoods");
+        headers.add("Content-type", "document");
+        headers.add("Extension", "md");
+        headers.add("Account", account);
 
-                        throw new WebClientResponseException(resp.rawStatusCode(),
-                                resp.statusCode().getReasonPhrase(), resp.headers().asHttpHeaders(), null, null);
-                    }
-                    return resp.bodyToMono(String.class);
-                });
+        return client.exchange(baseStorageUrl + "/upload",HttpMethod.POST,new HttpEntity<>(contents, headers),String.class);
     }
 
-    public Mono<String> SubmitJson(String name, String contents, String account, String app)
+    public ResponseEntity<String> SubmitJson(String name, String contents, String account, String app)
     {
-        return client.post().uri(baseStorageUrl + "/upload")
-                .header("FileName", name)
-                .header("App", app)
-                .header("Content-type", "json")
-                .header("Extension", "json")
-                .header("Account", account)
-                .body(contents, String.class)
-                .exchangeToMono((ClientResponse resp) ->{
-                    if(resp.statusCode().isError())
-                    {
-                        // To-Do: Log Error
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 
-                        throw new WebClientResponseException(resp.rawStatusCode(),
-                                resp.statusCode().getReasonPhrase(), resp.headers().asHttpHeaders(), null, null);
-                    }
-                    return resp.bodyToMono(String.class);
-                });
+        headers.add("FileName", name);
+        headers.add("App", app);
+        headers.add("Content-type", "json");
+        headers.add("Extension", "json");
+        headers.add("Account", account);
+        return client.exchange(baseStorageUrl + "/upload",HttpMethod.POST,new HttpEntity<>(contents, headers),String.class);
     }
 
 }

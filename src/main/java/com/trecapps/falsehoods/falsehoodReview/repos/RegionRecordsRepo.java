@@ -3,7 +3,7 @@ package com.trecapps.falsehoods.falsehoodReview.repos;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trecapps.base.InfoResource.config.StorageClient;
+import com.trecapps.falsehoods.falsehoodReview.config.StorageClient;
 import com.trecapps.base.InfoResource.models.Record;
 import com.trecapps.base.InfoResource.models.RegionRecords;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class RegionRecordsRepo {
     public List<Record> retrieveRecords(long id) throws JsonProcessingException {
         String name = "Region-Records-" + id;
 
-        String contents = client.getContents(name, "Resource").block();
+        String contents = client.getContents(name, "Resource").getBody();
 
         return mapper.readValue(contents, new TypeReference<List<Record>>() {
         });
