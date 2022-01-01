@@ -70,7 +70,7 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
     }
 
 
-    @PostMapping(value = "/Reject", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/Penalize", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> penalizeFalsehood(RequestEntity<MultiValueMap<String, String>> request,
                                                     @AuthenticationPrincipal OidcUser principal)
     {
