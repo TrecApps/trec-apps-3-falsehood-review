@@ -2,6 +2,8 @@ package com.trecapps.falsehoods.falsehoodReview.controllers;
 
 import com.trecapps.base.FalsehoodModel.models.FalsehoodUser;
 import com.trecapps.falsehoods.falsehoodReview.services.MediaFalsehoodsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,8 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
     @Autowired
     MediaFalsehoodsService mediaFalsehoodsService;
 
+    Logger logger = LoggerFactory.getLogger(MediaFalsehoodController.class);
+
     @PostMapping(value = "/Approve", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> approveFalsehood(RequestEntity<MultiValueMap<String, String>> request,
                                                    @AuthenticationPrincipal OidcUser principal)
@@ -39,9 +43,11 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
             id = new BigInteger(values.getFirst("Falsehood"));
         } catch (Exception e)
         {
+            logger.error("Failed to Get a Public Falsehood id for Approval", e);
             return new ResponseEntity<String>("Could not derive an id from the Falsehood field!", HttpStatus.BAD_REQUEST);
         }
 
+        logger.info("Attempting to Approve Public Falsehood {}!", id);
         String results = mediaFalsehoodsService.addVerdict(id, "Approved", values.getFirst("Comment"));
         return this.getResult(results);
     }
@@ -62,9 +68,11 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
             id = new BigInteger(values.getFirst("Falsehood"));
         } catch (Exception e)
         {
+            logger.error("Failed to Get a Public Falsehood id for Soft Rejection", e);
             return new ResponseEntity<String>("Could not derive an id from the Falsehood field!", HttpStatus.BAD_REQUEST);
         }
 
+        logger.info("Attempting to Reject Public Falsehood {}!", id);
         String results = mediaFalsehoodsService.addVerdict(id, "Safe-Reject", values.getFirst("Comment"));
         return this.getResult(results);
     }
@@ -86,9 +94,10 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
             id = new BigInteger(values.getFirst("Falsehood"));
         } catch (Exception e)
         {
+            logger.error("Failed to Get a Public Falsehood id for Hard Rejection", e);
             return new ResponseEntity<String>("Could not derive an id from the Falsehood field!", HttpStatus.BAD_REQUEST);
         }
-
+        logger.info("Attempting to Penalize Public Falsehood {}!", id);
         String results = mediaFalsehoodsService.addVerdict(id, "Penalize", values.getFirst("Comment"));
         return this.getResult(results);
     }

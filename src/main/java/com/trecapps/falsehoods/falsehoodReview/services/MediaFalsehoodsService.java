@@ -8,6 +8,8 @@ import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodRecordsRepo;
 import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodRepo;
 import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodUserRepo;
 import com.trecapps.base.InfoResource.models.Record;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,6 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MediaFalsehoodsService {
@@ -27,6 +28,8 @@ public class MediaFalsehoodsService {
 
     @Autowired
     FalsehoodUserRepo uRepo;
+
+    Logger logger = LoggerFactory.getLogger(PublicFalsehoodsService.class);
 
     public String addVerdict(BigInteger id, String approve, String comment)
     {
@@ -50,7 +53,7 @@ public class MediaFalsehoodsService {
             fRecords.setRecords(records);
             cRepos.save(fRecords);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("Poor JSON Data detected for attempt to {} Media Falsehood {} id", approve, id);
             return "500: Detected poorly formatted data for Falsehood Entry " + id;
         }
 
@@ -78,6 +81,7 @@ public class MediaFalsehoodsService {
             FalsehoodUser user = uRepo.getById(f.getUserId());
             user.setCredibility(user.getCredibility() + 5);
             uRepo.save(user);
+            logger.info("Media Falsehood {} has been approved!", id);
         }
         else if((safeRej + penRej) >= (appCount * 2))
         {
@@ -88,9 +92,10 @@ public class MediaFalsehoodsService {
                 user.setCredibility(user.getCredibility() - 5);
                 uRepo.save(user);
             }
+            logger.info("Media Falsehood {} has been Rejected!", id);
         }
         repo.save(f);
-
+        logger.info("Successfully added Verdict {} to Media Falsehood {}", approve, id);
         return "";
     }
 }

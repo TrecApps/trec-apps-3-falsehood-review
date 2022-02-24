@@ -9,6 +9,8 @@ import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodUserRepo;
 import com.trecapps.falsehoods.falsehoodReview.repos.PublicFalsehoodRecordsRepo;
 import com.trecapps.falsehoods.falsehoodReview.repos.PublicFalsehoodRepo;
 import com.trecapps.base.InfoResource.models.Record;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,6 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PublicFalsehoodsService {
@@ -29,6 +30,8 @@ public class PublicFalsehoodsService {
 
     @Autowired
     FalsehoodUserRepo uRepo;
+
+    Logger logger = LoggerFactory.getLogger(PublicFalsehoodsService.class);
 
     public String addVerdict(BigInteger id, String approve, String comment)
     {
@@ -57,7 +60,7 @@ public class PublicFalsehoodsService {
             fRecords.setRecords(records);
             cRepos.save(fRecords);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("Poor JSON Data detected for attempt to {} Public Falsehood {} id", approve, id);
             return "500: Detected poorly formatted data for Falsehood Entry " + id;
         }
 
@@ -86,6 +89,7 @@ public class PublicFalsehoodsService {
             FalsehoodUser user = uRepo.getById(f.getUserId());
             user.setCredibility(user.getCredibility() + 5);
             uRepo.save(user);
+            logger.info("Public Falsehood {} has been approved!", id);
         }
         if((safeRej + penRej) >= (appCount * 2))
         {
@@ -96,9 +100,10 @@ public class PublicFalsehoodsService {
                 user.setCredibility(user.getCredibility() - 5);
                 uRepo.save(user);
             }
+            logger.info("Public Falsehood {} has been Rejected!", id);
         }
         repo.save(f);
-
+        logger.info("Successfully added Verdict {} to Public Falsehood {}", approve, id);
         return "";
     }
 
