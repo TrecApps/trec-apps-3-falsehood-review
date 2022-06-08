@@ -1,6 +1,8 @@
 package com.trecapps.falsehoods.falsehoodReview.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.trecapps.auth.models.TcUser;
+import com.trecapps.auth.services.UserStorageService;
 import com.trecapps.base.FalsehoodModel.models.Falsehood;
 import com.trecapps.base.FalsehoodModel.models.FalsehoodRecords;
 import com.trecapps.base.FalsehoodModel.models.FalsehoodUser;
@@ -27,7 +29,7 @@ public class MediaFalsehoodsService {
     FalsehoodRecordsRepo cRepos;
 
     @Autowired
-    FalsehoodUserRepo uRepo;
+    UserStorageService uRepo;
 
     Logger logger = LoggerFactory.getLogger(PublicFalsehoodsService.class);
 
@@ -75,12 +77,12 @@ public class MediaFalsehoodsService {
                 }
             }
         }
-
+        try{
         if(appCount >= (2 * (safeRej + penRej))) {
             f.setStatus((byte) 2);
-            FalsehoodUser user = uRepo.getById(f.getUserId());
-            user.setCredibility(user.getCredibility() + 5);
-            uRepo.save(user);
+            TcUser user = uRepo.retrieveUser(f.getUserId());
+            user.setCredibilityRating(user.getCredibilityRating() + 5);
+            uRepo.saveUser(user);
             logger.info("Media Falsehood {} has been approved!", id);
         }
         else if((safeRej + penRej) >= (appCount * 2))
@@ -88,11 +90,16 @@ public class MediaFalsehoodsService {
             f.setStatus((byte)5);
             if(penRej > safeRej)
             {
-                FalsehoodUser user = uRepo.getById(f.getUserId());
-                user.setCredibility(user.getCredibility() - 5);
-                uRepo.save(user);
+                TcUser user = uRepo.retrieveUser(f.getUserId());
+                user.setCredibilityRating(user.getCredibilityRating() - 5);
+                uRepo.saveUser(user);
             }
             logger.info("Media Falsehood {} has been Rejected!", id);
+        }
+        } catch (Exception e)
+        {
+            logger.error(e.getMessage());
+            return "500: " + e.getMessage();
         }
         repo.save(f);
         logger.info("Successfully added Verdict {} to Media Falsehood {}", approve, id);

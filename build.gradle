@@ -26,6 +26,12 @@ repositories {
 }
 
 dependencies {
+
+    implementation 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    //Enable Trec-Auth
+    implementation 'com.trecapps.auth:TrecAuth:0.0.13'
     // Trec-Apps Model Dependencies
     implementation 'com.trecapps.base:InfoResource:0.1.1'
     implementation 'com.trecapps.base:FalsehoodModel:0.1.7'
@@ -47,6 +53,12 @@ dependencies {
     implementation 'javax.validation:validation-api:+'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:+'
     implementation 'com.azure:azure-spring-data-cosmos:+'
+
+    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa:+'
+    // Use JWT for token generation and verification
+    implementation 'com.auth0:java-jwt:+'
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.66'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:+'
 
     implementation 'mysql:mysql-connector-java:+' // mySQL
 

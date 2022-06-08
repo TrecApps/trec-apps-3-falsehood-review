@@ -2,6 +2,7 @@ package com.trecapps.falsehoods.falsehoodReview.security;
 
 import com.azure.spring.aad.webapp.AADOAuth2UserService;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.trecapps.auth.services.TrecAccountService;
 import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,35 +16,29 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     @Autowired
-    SecurityConfig(AADAuthenticationProperties aadAuthProps,
-                    FalsehoodUserRepo falsehoodUserRepo)
+    SecurityConfig(TrecAccountService trecAccountService1)
     {
-        aadoAuth2UserService = new AADOAuth2UserService(aadAuthProps);
-        this.falsehoodUserRepo = falsehoodUserRepo;
-    }
-    FalsehoodUserRepo falsehoodUserRepo;
-    AADOAuth2UserService aadoAuth2UserService;
+        //aadAuthProps.setRedirectUriTemplate("http://localhost:4200/api");
+        trecAccountService = trecAccountService1;
 
+    }
+    TrecAccountService trecAccountService;
 
     @Override
     protected void configure(HttpSecurity security) throws Exception
     {
-        security
+        security.csrf().disable()
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .oidcUserService(getTrecDirectoryService());
-    }
-
-    @Bean
-    protected TrecActiveDirectoryService getTrecDirectoryService()
-    {
-        return new TrecActiveDirectoryService(aadoAuth2UserService, falsehoodUserRepo);
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll()
+                .and()
+                .userDetailsService(trecAccountService)
+        ;
     }
 
 }

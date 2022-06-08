@@ -1,5 +1,7 @@
 package com.trecapps.falsehoods.falsehoodReview.controllers;
 
+import com.trecapps.auth.models.TcUser;
+import com.trecapps.auth.services.UserStorageService;
 import com.trecapps.base.FalsehoodModel.models.FalsehoodUser;
 import com.trecapps.falsehoods.falsehoodReview.services.MediaFalsehoodsService;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,17 +25,30 @@ import java.math.BigInteger;
 @RequestMapping("/Review/Media")
 public class MediaFalsehoodController extends FalsehoodControllerBase{
 
-    @Autowired
     MediaFalsehoodsService mediaFalsehoodsService;
 
     Logger logger = LoggerFactory.getLogger(MediaFalsehoodController.class);
 
+    @Autowired
+    public MediaFalsehoodController(UserStorageService userStorageService1,
+                                    MediaFalsehoodsService mediaFalsehoodsService1) {
+        super(userStorageService1);
+        mediaFalsehoodsService = mediaFalsehoodsService1;
+    }
+
     @PostMapping(value = "/Approve", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> approveFalsehood(RequestEntity<MultiValueMap<String, String>> request,
-                                                   @AuthenticationPrincipal OidcUser principal)
+    public ResponseEntity<String> approveFalsehood(RequestEntity<MultiValueMap<String, String>> request)
     {
-        FalsehoodUser user = principal.getClaim("FalsehoodUser");
-        if(user.getCredibility() < MIN_CREDIT_SUBMIT_NEW)
+        TcUser user = null;
+
+        try {
+            user = getUserDetails(SecurityContextHolder.getContext());
+        }catch (Exception e)
+        {
+            return new ResponseEntity<String>
+                    (e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if(user.getCredibilityRating() < MIN_CREDIT_SUBMIT_NEW)
             return new ResponseEntity<String>
                     ("Your Credibility Is too low. Please build up your credibility to 60 points before reviewing other falsehoods!",
                             HttpStatus.FORBIDDEN);
@@ -53,11 +69,18 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
     }
 
     @PostMapping(value = "/Reject", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> rejectFalsehood(RequestEntity<MultiValueMap<String, String>> request,
-                                                  @AuthenticationPrincipal OidcUser principal)
+    public ResponseEntity<String> rejectFalsehood(RequestEntity<MultiValueMap<String, String>> request)
     {
-        FalsehoodUser user = principal.getClaim("FalsehoodUser");
-        if(user.getCredibility() < MIN_CREDIT_SUBMIT_NEW)
+        TcUser user = null;
+
+        try {
+            user = getUserDetails(SecurityContextHolder.getContext());
+        }catch (Exception e)
+        {
+            return new ResponseEntity<String>
+                    (e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if(user.getCredibilityRating() < MIN_CREDIT_SUBMIT_NEW)
             return new ResponseEntity<String>
                     ("Your Credibility Is too low. Please build up your credibility to 60 points before reviewing other falsehoods!",
                             HttpStatus.FORBIDDEN);
@@ -79,11 +102,18 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
 
 
     @PostMapping(value = "/Penalize", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> penalizeFalsehood(RequestEntity<MultiValueMap<String, String>> request,
-                                                    @AuthenticationPrincipal OidcUser principal)
+    public ResponseEntity<String> penalizeFalsehood(RequestEntity<MultiValueMap<String, String>> request)
     {
-        FalsehoodUser user = principal.getClaim("FalsehoodUser");
-        if(user.getCredibility() < MIN_CREDIT_SUBMIT_NEW)
+        TcUser user = null;
+
+        try {
+            user = getUserDetails(SecurityContextHolder.getContext());
+        }catch (Exception e)
+        {
+            return new ResponseEntity<String>
+                    (e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if(user.getCredibilityRating() < MIN_CREDIT_SUBMIT_NEW)
             return new ResponseEntity<String>
                     ("Your Credibility Is too low. Please build up your credibility to 60 points before reviewing other falsehoods!",
                             HttpStatus.FORBIDDEN);
