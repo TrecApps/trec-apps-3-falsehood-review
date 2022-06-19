@@ -2,7 +2,6 @@ package com.trecapps.falsehoods.falsehoodReview.controllers;
 
 import com.trecapps.auth.models.TcUser;
 import com.trecapps.auth.services.UserStorageService;
-import com.trecapps.base.FalsehoodModel.models.FalsehoodUser;
 import com.trecapps.falsehoods.falsehoodReview.services.MediaFalsehoodsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

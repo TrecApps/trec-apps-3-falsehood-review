@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trecapps.falsehoods.falsehoodReview.config.StorageClient;
-import com.trecapps.base.InfoResource.models.PublicFigureRecords;
-import com.trecapps.base.InfoResource.models.Record;
+import com.trecapps.falsehoods.falsehoodReview.models.PublicFigureRecords;
+import com.trecapps.falsehoods.falsehoodReview.models.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class PublicFigureRecordRepo {
 
         String name = "Public-Figure-Records-" + records.getFigureId();
 
-        client.SubmitJson(name, mapper.writeValueAsString(records.getRecords()), "Trec-Apps-Resource", "Resource");
+        client.SubmitJson(name, mapper.writeValueAsString(records.getRecords()));
     }
 
     public List<Record> retrieveRecords(long id) throws JsonProcessingException {

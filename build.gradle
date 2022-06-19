@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'org.springframework.boot' version '2.4.2'
+    id 'org.springframework.boot' version '2.5.12'
     id 'jacoco'
 }
 
@@ -11,6 +11,10 @@ apply plugin: 'jacoco'
 
 group 'com.trecapps.falsehoods'
 version '0.0.2'
+
+ext {
+    springbootVersion = '2.5.12'
+}
 
 repositories {
     mavenCentral()
@@ -31,28 +35,26 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     //Enable Trec-Auth
-    implementation 'com.trecapps.auth:TrecAuth:0.0.13'
-    // Trec-Apps Model Dependencies
-    implementation 'com.trecapps.base:InfoResource:0.1.1'
-    implementation 'com.trecapps.base:FalsehoodModel:0.1.7'
+    implementation 'com.trecapps.auth:TrecAuth:0.0.16'
+    // Trec-Apps Model Dependencie
+
+    implementation 'org.apache.httpcomponents:httpclient:+'
 
     // Spring Boot features
-    implementation 'org.springframework.boot:spring-boot-starter-web:+'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux:+'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:+'
+    implementation "org.springframework.boot:spring-boot-starter-web:$springbootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-webflux:$springbootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:$springbootVersion"
 
     // Security Dependencies
-    implementation 'org.springframework.boot:spring-boot-starter-security:+'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:+'
-    implementation 'com.microsoft.azure:azure-active-directory-spring-boot-starter:+'
+    implementation "org.springframework.boot:spring-boot-starter-security:$springbootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-client:$springbootVersion"
 
 
     // DB Support
     implementation 'org.hibernate:hibernate-core:5.4.11.Final'
     implementation 'org.hibernate:hibernate-entitymanager:5.4.11.Final'
     implementation 'javax.validation:validation-api:+'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:+'
-    implementation 'com.azure:azure-spring-data-cosmos:+'
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springbootVersion"
 
     //implementation 'org.springframework.boot:spring-boot-starter-data-jpa:+'
     // Use JWT for token generation and verification
@@ -61,6 +63,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:+'
 
     implementation 'mysql:mysql-connector-java:+' // mySQL
+    implementation 'com.azure:azure-storage-blob:+'
 
     // Azure Logging
     implementation 'com.microsoft.azure:applicationinsights-spring-boot-starter:+'

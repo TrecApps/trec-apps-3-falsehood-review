@@ -1,6 +1,6 @@
 package com.trecapps.falsehoods.falsehoodReview.repos;
 
-import com.trecapps.base.InfoResource.models.Region;
+import com.trecapps.falsehoods.falsehoodReview.models.Region;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
