@@ -63,7 +63,7 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
         }
 
         logger.info("Attempting to Approve Public Falsehood {}!", id);
-        String results = mediaFalsehoodsService.addVerdict(id, "Approved", values.getFirst("Comment"));
+        String results = mediaFalsehoodsService.addVerdict(id, "Approved", values.getFirst("Comment"), user.getId());
         return this.getResult(results);
     }
 
@@ -95,7 +95,7 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
         }
 
         logger.info("Attempting to Reject Public Falsehood {}!", id);
-        String results = mediaFalsehoodsService.addVerdict(id, "Safe-Reject", values.getFirst("Comment"));
+        String results = mediaFalsehoodsService.addVerdict(id, "Safe-Reject", values.getFirst("Comment"), user.getId());
         return this.getResult(results);
     }
 
@@ -127,7 +127,7 @@ public class MediaFalsehoodController extends FalsehoodControllerBase{
             return new ResponseEntity<String>("Could not derive an id from the Falsehood field!", HttpStatus.BAD_REQUEST);
         }
         logger.info("Attempting to Penalize Public Falsehood {}!", id);
-        String results = mediaFalsehoodsService.addVerdict(id, "Penalize", values.getFirst("Comment"));
+        String results = mediaFalsehoodsService.addVerdict(id, "Penalize", values.getFirst("Comment"), user.getId());
         return this.getResult(results);
     }
 }

@@ -31,7 +31,7 @@ public class MediaFalsehoodsService {
 
     Logger logger = LoggerFactory.getLogger(PublicFalsehoodsService.class);
 
-    public String addVerdict(BigInteger id, String approve, String comment)
+    public String addVerdict(BigInteger id, String approve, String comment, String userId)
     {
         // Make sure target falsehood is in repos
         if(!repo.existsById(id))
@@ -42,6 +42,9 @@ public class MediaFalsehoodsService {
         int s = f.getStatus();
         if(s > 1)
             return "400: Falsehood already has a Final Verdict!";
+
+        if(userId.equals(f.getUserId()))
+            return "403: Users cannot review Their own Falsehood Entries";
 
         Record record = new Record("Verdict", approve, new Date(Calendar.getInstance().getTime().getTime()), 0l, comment);
         List<Record> records;

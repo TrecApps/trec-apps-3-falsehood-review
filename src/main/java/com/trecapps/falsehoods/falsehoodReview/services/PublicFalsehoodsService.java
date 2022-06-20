@@ -32,7 +32,7 @@ public class PublicFalsehoodsService {
 
     Logger logger = LoggerFactory.getLogger(PublicFalsehoodsService.class);
 
-    public String addVerdict(BigInteger id, String approve, String comment)
+    public String addVerdict(BigInteger id, String approve, String comment, String userId)
     {
         if( !repo.existsById(id))
             return "404: Falsehood does not exist!";
@@ -44,7 +44,8 @@ public class PublicFalsehoodsService {
             return "400: Falsehood already has a Final Verdict!";
 
         // To-Do: Once User Support is added, make sure that this user is not the submitting user
-
+        if(userId.equals(f.getUserId()))
+            return "403: Users cannot review Their own Falsehood Entries";
 
         // End To-DO
 

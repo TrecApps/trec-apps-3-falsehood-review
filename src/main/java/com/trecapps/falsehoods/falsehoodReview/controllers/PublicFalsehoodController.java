@@ -63,7 +63,7 @@ public class PublicFalsehoodController extends FalsehoodControllerBase{
         }
 
         logger.info("Attempting to Approve Public Falsehood {}!", id);
-        String results = publicFalsehoodsService.addVerdict(id, "Approved", values.getFirst("Comment"));
+        String results = publicFalsehoodsService.addVerdict(id, "Approved", values.getFirst("Comment"), user.getId());
         return this.getResult(results);
     }
 
@@ -95,7 +95,7 @@ public class PublicFalsehoodController extends FalsehoodControllerBase{
         }
 
         logger.info("Attempting to Reject Public Falsehood {}!", id);
-        String results = publicFalsehoodsService.addVerdict(id, "Safe-Reject", values.getFirst("Comment"));
+        String results = publicFalsehoodsService.addVerdict(id, "Safe-Reject", values.getFirst("Comment"), user.getId());
         return this.getResult(results);
     }
 
@@ -128,7 +128,7 @@ public class PublicFalsehoodController extends FalsehoodControllerBase{
         }
 
         logger.info("Attempting to Penalize Public Falsehood {}!", id);
-        String results = publicFalsehoodsService.addVerdict(id, "Penalize", values.getFirst("Comment"));
+        String results = publicFalsehoodsService.addVerdict(id, "Penalize", values.getFirst("Comment"), user.getId());
         return this.getResult(results);
     }
 }
