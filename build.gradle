@@ -10,10 +10,15 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
 
 group 'com.trecapps.falsehoods'
-version '0.0.2'
+version '0.0.3'
 
 ext {
     springbootVersion = '2.5.12'
+}
+
+jar{
+    archiveClassifier=''
+    enabled = true
 }
 
 repositories {
