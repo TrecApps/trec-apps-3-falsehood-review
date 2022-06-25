@@ -1,6 +1,7 @@
 package com.trecapps.falsehoods.falsehoodReview.security;
 
 import com.trecapps.auth.services.TrecAccountService;
+import com.trecapps.auth.services.TrecSecurityContext;
 import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,13 +16,13 @@ import org.springframework.stereotype.Component;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    SecurityConfig(TrecAccountService trecAccountService1)
+    SecurityConfig(TrecAccountService trecAccountService1, TrecSecurityContext trecSecurityContext1)
     {
-        //aadAuthProps.setRedirectUriTemplate("http://localhost:4200/api");
         trecAccountService = trecAccountService1;
-
+        trecSecurityContext = trecSecurityContext1;
     }
     TrecAccountService trecAccountService;
+    TrecSecurityContext trecSecurityContext;
 
     @Override
     protected void configure(HttpSecurity security) throws Exception
@@ -31,11 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .authorizeRequests()
-                .anyRequest()
-                .permitAll()
-                .and()
                 .userDetailsService(trecAccountService)
+                .securityContext().securityContextRepository(trecSecurityContext)
         ;
     }
 

@@ -31,7 +31,7 @@ public class PublicFalsehoodRecordsRepo// extends CosmosRepository<PublicFalseho
     }
 
     public List<Record> retrieveRecords(BigInteger id) throws JsonProcessingException {
-        String name = "Public-Falsehood-Records-" + id;
+        String name = "Public-Falsehood-Records-" + id + ".json";
 
         String contents = client.getContents(name, "Falsehood").getBody();
 

@@ -40,6 +40,8 @@ public class FalsehoodControllerBase {
                 return new ResponseEntity<>(result.substring(4).trim(), HttpStatus.NOT_FOUND);
             case "500":
                 return new ResponseEntity<>(result.substring(4).trim(), HttpStatus.INTERNAL_SERVER_ERROR);
+            case "403":
+                return new ResponseEntity<>(result.substring(4).trim(), HttpStatus.FORBIDDEN);
         }
 
         return new ResponseEntity<>("Success", HttpStatus.OK);

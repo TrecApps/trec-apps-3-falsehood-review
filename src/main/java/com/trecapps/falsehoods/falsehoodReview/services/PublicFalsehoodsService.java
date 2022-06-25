@@ -46,6 +46,7 @@ public class PublicFalsehoodsService {
         // To-Do: Once User Support is added, make sure that this user is not the submitting user
         if(userId.equals(f.getUserId()))
             return "403: Users cannot review Their own Falsehood Entries";
+        else logger.info("User {} just approved User {} 's falsehood", userId, f.getUserId());
 
         // End To-DO
 
@@ -84,6 +85,8 @@ public class PublicFalsehoodsService {
         }
 
         try{
+            logger.info("Approval Count: {} Reject Count: {} Penalize Count: {}", appCount, safeRej, penRej);
+
         if(appCount >= (2 * (safeRej + penRej))) {
             f.setStatus((byte) 2);
 
