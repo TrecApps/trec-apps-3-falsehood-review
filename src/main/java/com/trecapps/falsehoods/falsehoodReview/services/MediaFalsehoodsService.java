@@ -8,6 +8,7 @@ import com.trecapps.falsehoods.falsehoodReview.models.FalsehoodRecords;
 import com.trecapps.falsehoods.falsehoodReview.models.Record;
 import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodRecordsRepo;
 import com.trecapps.falsehoods.falsehoodReview.repos.FalsehoodRepo;
+import com.trecapps.notifications.services.NotificationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class MediaFalsehoodsService {
 
     @Autowired
     UserStorageService uRepo;
+
+    @Autowired
+    NotificationManager notificationManager;
 
     Logger logger = LoggerFactory.getLogger(PublicFalsehoodsService.class);
 
@@ -85,6 +89,8 @@ public class MediaFalsehoodsService {
             user.setCredibilityRating(user.getCredibilityRating() + 5);
             uRepo.saveUser(user);
             logger.info("Media Falsehood {} has been approved!", id);
+
+            notificationManager.notify(f.getUserId(), String.format("Congratulations! Your Media Falsehood:{} has been approved!", id), "Falsehoods");
         }
         else if((safeRej + penRej) >= (appCount * 2))
         {
@@ -96,6 +102,7 @@ public class MediaFalsehoodsService {
                 uRepo.saveUser(user);
             }
             logger.info("Media Falsehood {} has been Rejected!", id);
+            notificationManager.notify(f.getUserId(), String.format("Your Media Falsehood:{} has been Rejected!", id), "Falsehoods");
         }
         } catch (Exception e)
         {

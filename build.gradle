@@ -41,6 +41,7 @@ dependencies {
 
     //Enable Trec-Auth
     implementation 'com.trecapps.auth:TrecAuth:0.0.21'
+    implementation 'com.trecapps.notifications:trec-notifications:0.0.1'
     // Trec-Apps Model Dependencie
 
     implementation 'org.apache.httpcomponents:httpclient:+'

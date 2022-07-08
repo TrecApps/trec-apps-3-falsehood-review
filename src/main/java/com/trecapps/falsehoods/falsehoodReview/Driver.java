@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 //@EntityScan(basePackages = {"com.trecapps.base.FalsehoodModel.models", "com.trecapps.base.InfoResource.models"})
-@ComponentScan({"com.trecapps.auth.*", "com.trecapps.falsehoods.falsehoodReview.*"})
+@ComponentScan({"com.trecapps.auth.*", "com.trecapps.falsehoods.falsehoodReview.*", "com.trecapps.notifications.*"})
 public class Driver {
 
     public static void main(String[] args) {
