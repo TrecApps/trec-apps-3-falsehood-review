@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         security.csrf().disable()
                 .authorizeRequests()
                 .anyRequest()
-                .authenticated()
+                .hasAuthority("EMAIL_VERIFIED")
                 .and()
                 .userDetailsService(trecAccountService)
                 .securityContext().securityContextRepository(trecSecurityContext)

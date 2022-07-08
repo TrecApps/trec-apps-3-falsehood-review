@@ -40,7 +40,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     //Enable Trec-Auth
-    implementation 'com.trecapps.auth:TrecAuth:0.0.18'
+    implementation 'com.trecapps.auth:TrecAuth:0.0.21'
     // Trec-Apps Model Dependencie
 
     implementation 'org.apache.httpcomponents:httpclient:+'
