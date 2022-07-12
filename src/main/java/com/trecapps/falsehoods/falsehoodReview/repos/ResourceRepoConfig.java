@@ -55,7 +55,7 @@ public class ResourceRepoConfig {
 
         LocalContainerEntityManagerFactoryBean ret = primaryEntityManagerFactoryBuilder
                 .dataSource(primaryDataSource)
-                .packages("com.trecapps.falsehoods.falsehoodReview.models")
+                .packages("com.trecapps.base.FalsehoodModel.models", "com.trecapps.base.InfoResource.models")
                 .persistenceUnit("resourcesDataSource")
                 .properties(primaryJpaProperties)
                 .build();

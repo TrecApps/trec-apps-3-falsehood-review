@@ -3,9 +3,9 @@ package com.trecapps.falsehoods.falsehoodReview.repos;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.trecapps.base.InfoResource.models.Record;
+import com.trecapps.base.InfoResource.models.RegionRecords;
 import com.trecapps.falsehoods.falsehoodReview.config.StorageClient;
-import com.trecapps.falsehoods.falsehoodReview.models.Record;
-import com.trecapps.falsehoods.falsehoodReview.models.RegionRecords;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +34,7 @@ public class RegionRecordsRepo {
 
         String contents = client.getContents(name, "Resource").getBody();
 
-        return mapper.readValue(contents, new TypeReference<List<Record>>() {
+        return mapper.readValue(contents, new TypeReference<>() {
         });
     }
 
